@@ -1,0 +1,39 @@
+# The logging level to record in the log file.  See Python's
+# logging module for more information.  If this configuration
+# line is not provided, logging messages of INFO and more severe
+# are logged.
+log-level: INFO
+
+# A list of directories to watch for data files
+directories:
+
+  - directory: /home/pi/pypi/data    # a directory to scan for data files
+
+    # list of file patterns that identify the data files to archive and upload.  Only
+    # files that have not been modified in the last "finished-secs" seconds are
+    # archived and uploaded.
+    # Note that the "pattern" values below need to be surrounded by quotes because
+    # they contain special characters.
+    file-patterns:
+      - pattern: "*.csv"       # must be a pattern compatible with Python "glob" function
+        finished-secs: 600      # optional, defaults to 5 seconds
+
+    # where to store compressed data files on local system.
+    archive-dir: /home/pi/archive/data
+
+    # the AWS S3 bucket and base key identifying where the data files should
+    # be uploaded to.  The data file name is added to this base key.  In the
+    # example below, "dataacq.analysisnorth.com" is the S3 bucket name, and
+    # "powerhouse/kwethluk/data" is the base part of the key.  If a data file
+    # of "xyz.csv.bz2" is uploaded, it will be uploaded to the key:
+    # "powerhouse/kwethluk/data/xyz.csv.bz2".
+    # The AWS credentials on the local machine must allow writing into this
+    # S3bucket.
+    bucket-and-key: powerhouse.analysisnorth.com/orca-ph0/data
+
+    google-drive-key-file: /home/pi/solar-pypi/credentials/gdrive_cred_file.json
+    google-drive-folder-id: 
+    google-drive-scopes: ['https://www.googleapis.com/auth/drive']
+
+  # Can have any number of "directory" entries.
+  
