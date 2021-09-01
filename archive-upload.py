@@ -147,19 +147,7 @@ try:
             upload_pending.remove((fn, bucket_key))
             logging.info(f'{fn} does not exist, so will not be uploaded.')
 
-        # split the bucket + key into a bucket and a key.  The urlparse
-        # function does this well, except for leaving a leading slash on the
-        # key.
-        parts = urlparse('s3://' + bucket_key)
-        bucket = parts.netloc
-        key = parts.path[1:]   # remove leading slash
-        try:
-            s3.meta.client.upload_file(fn, bucket, key)
-            upload_pending.remove((fn, bucket_key))
-            logging.info(f'Uploaded {fn}')
-        except Exception as e:
-            logging.exception('Error attempting to upload {fn}')
-            
+ 
         # Google Drive Upload Option
         try:
             credentials_file = dr.get("google-drive-key-file")
@@ -176,7 +164,10 @@ try:
                            media_body=export_media,
                            supportsAllDrives="true",
                            fields="id").execute()
-
+            
+            upload_pending.remove((fn, bucket_key))
+            logging.info(f'Uploaded {fn}')
+        
         except Exception as e:
             logging.exception(f"Error attempting to upload {fn} to Google Drive")
 
