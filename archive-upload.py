@@ -162,20 +162,20 @@ try:
             
         # Google Drive Upload Option
         try:
-        credentials_file = dr.get("google-drive-key-file")
-        scopes = dr.get("google-drive-scopes")
-        target_drive_folders = [dr.get("google-drive-folder-id")]
+            credentials_file = dr.get("google-drive-key-file")
+            scopes = dr.get("google-drive-scopes")
+            target_drive_folders = [dr.get("google-drive-folder-id")]
 
-        credentials = service_account.Credentials.from_service_account_file(credentials_file).with_scopes(scopes)
-        drive_client = build('drive', 'v3', credentials=credentials)
+            credentials = service_account.Credentials.from_service_account_file(credentials_file).with_scopes(scopes)
+            drive_client = build('drive', 'v3', credentials=credentials)
 
-        export_fname = fn.split("/")[-1]
-        export_metadata = {'name':export_fname, 'parents':target_drive_folders}
-        export_media = MediaFileUpload(fn, mimetype='application/octet-stream', resumable=True)
-        drive_client.files().create(body=export_metadata,
-                       media_body=export_media,
-                       supportsAllDrives="true",
-                       fields="id").execute()
+            export_fname = fn.split("/")[-1]
+            export_metadata = {'name':export_fname, 'parents':target_drive_folders}
+            export_media = MediaFileUpload(fn, mimetype='application/octet-stream', resumable=True)
+            drive_client.files().create(body=export_metadata,
+                           media_body=export_media,
+                           supportsAllDrives="true",
+                           fields="id").execute()
 
         except Exception as e:
             logging.exception(f"Error attempting to upload {fn} to Google Drive")
