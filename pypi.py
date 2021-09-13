@@ -120,7 +120,7 @@ for an_address in sdi_12_address:
     
 ser.close()
 
-print('Saving to %s' %data_file_path)
+# print('Saving to %s' %data_file_path)
 
 while True:
     # Data filename needs to be inside the While loop so it properly starts a new file at midnight
