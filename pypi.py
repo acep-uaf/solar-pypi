@@ -97,11 +97,6 @@ now=datetime.datetime.now() # use local time, not recommended for multiple data 
 if 'data' not in os.listdir('/home/pi/pypi'):
     os.mkdir('/home/pi/pypi/data')
     
-data_file_name="%04d%02d%02d.csv" %(now.year,now.month,now.day)
-data_file_path = "/home/pi/pypi/data/" + data_file_name
-
-
-
 sdi_12_address=''
 #user_sdi_12_address=input('Enter all SDI-12 sensor addresses, such as 1234:')
 #user_sdi_12_address=user_sdi_12_address.strip() # Remove any \r from an input file typed in windows
@@ -128,6 +123,9 @@ ser.close()
 print('Saving to %s' %data_file_path)
 
 while True:
+    # Data filename needs to be inside the While loop so it properly starts a new file at midnight
+    data_file_name="%04d%02d%02d.csv" %(now.year,now.month,now.day)
+    data_file_path = "/home/pi/pypi/data/" + data_file_name
     
     while True:
         if datetime.datetime.now().second % timestep == 0:
@@ -246,7 +244,7 @@ while True:
   
     print(output_str)
     output_str=output_str+'\n'
-    data_file = open(data_file_path, 'a') # open yyyymmdd.csv for appending
+    data_file = open(data_file_path, 'a+') # open yyyymmdd.csv for appending
     data_file.write(output_str)
     data_file.close()
     
